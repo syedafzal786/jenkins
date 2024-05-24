@@ -1,0 +1,15 @@
+node {
+    
+    stage('git clone') {
+       git branch: 'main', url: 'https://github.com/syedafzal786/terraform-class-10-30-am-.git'
+    }
+    stage('init') {
+        sh 'terraform init'
+    }
+    stage('plan') {
+        sh 'terraform plan'
+    }
+    stage('apply') {
+        sh "terraform ${action} -auto-approve"
+    }
+}
