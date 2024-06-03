@@ -1,0 +1,35 @@
+pipeline {    agent any
+    stages {
+        stage('stage-1') {            
+            steps {
+                git branch: 'main', url: 'https://github.com/syedafzal786/terraform_maven.git'            
+            }
+        }   
+        stage('clean') {            
+            steps {
+            dir('Afzalproject') {
+             sh  'mvn clean'
+            }
+          }
+        }        
+        stage('test') {
+            steps {
+            dir('Afzalproject') {
+            sh  'mvn test'
+            }
+          }       
+        }
+        stage('install') {            
+            steps {
+            dir('Afzalproject') {
+               sh  'mvn install'
+            }
+          }
+        }        
+        stage('deployment') {
+            steps {                
+              deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://15.207.106.180:8081/')], contextPath: null, war: '**/*.war '
+            }        
+        }
+    }
+}
